@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎯 Ink Mixer Pro</title>
+  <meta name="theme-color" content="#6366f1" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+    :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --secondary: #f59e0b;
+        --success: #10b981;
+        --greif-green: #22c55e;
+        --greif-dark-green: #16a34a;
+        --dark: #1e293b;
+        --darker: #0f172a;
+        --light: #f8fafc;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+        color: var(--light);
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 25px;
+        animation: fadeInDown 0.8s ease;
+    }
+
+    .logo {
+        font-size: 3rem;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .subtitle {
+        color: #94a3b8;
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .slogan {
+        background: linear-gradient(135deg, var(--greif-green), var(--greif-dark-green));
+        color: white;
+        padding: 12px 20px;
+        border-radius: 15px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-align: center;
+        margin: 15px 0;
+        box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
+        animation: pulse 2s infinite;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 20px;
+        animation: slideUp 0.6s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #cbd5e1;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 15px 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        color: var(--light);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: rgba(255, 255, 255, 0.15);
+        transform: scale(1.02);
+    }
+
+    input::placeholder {
+        color: #64748b;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    .result-card {
+        background: linear-gradient(135deg, var(--success), #059669);
+        animation: bounceIn 0.8s ease;
+    }
+
+    .result-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .result-item:last-child {
+        border-bottom: none;
+    }
+
+    .solvent-value {
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+
+    .solvent-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .progress-container {
+        margin: 15px 0;
+    }
+
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+        color: #cbd5e1;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--greif-green), var(--secondary));
+        border-radius: 10px;
+        transition: width 0.5s ease;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .stat-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 12px;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--greif-green);
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: #94a3b8;
+    }
+
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounceIn {
+        0% { opacity: 0; transform: scale(0.3); }
+        50% { opacity: 1; transform: scale(1.05); }
+        70% { transform: scale(0.9); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+    }
+
+    .icon { font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">⚗️</div>
+      <h1 class="title">Ink Mixer Pro</h1>
+      <p class="subtitle">Умный расчет пропорций для профессионалов</p>
+      <div class="slogan">🎯 GREIF: Packaging success together</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">🎯</span>
+        Параметры замеса
+      </div>
+      
+      <div class="input-group">
+        <label for="weight">Вес чернил (граммы)</label>
+        <input type="number" id="weight" placeholder="Введите вес...">
+      </div>
+      
+      <div class="input-group">
+        <label for="manufacturer">Производитель чернил</label>
+        <select id="manufacturer">
+          <option value="0.267,0.75,0.25">Санкемикалз (26.7%)</option>
+          <option value="0.333,0.4,0.6">Сико (33.3%)</option>
+          <option value="0.25,0.8,0.2">Китай (25%)</option>
+          <option value="0.221,0.333,0.667">Тампо Механика (22.1%)</option>
+        </select>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-label">
+          <span>Точность расчета</span>
+          <span id="accuracy">95%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 95%"></div>
+        </div>
+      </div>
+
+      <button class="btn" onclick="calculate()">
+        <span class="icon">🚀</span>
+        РАССЧИТАТЬ ПРОПОРЦИИ
+      </button>
+    </div>
+
+    <div class="card result-card" id="resultCard" style="display: none;">
+      <div class="card-title">
+        <span class="icon">📊</span>
+        Результат расчета
+      </div>
+      <div id="resultContent"></div>
+      <div class="stats-grid" id="statsGrid" style="display: none;">
+        <div class="stat-item">
+          <div class="stat-value" id="totalCost">0₽</div>
+          <div class="stat-label">Стоимость</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="timeSave">15min</div>
+          <div class="stat-label">Экономия времени</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">💡</span>
+        Преимущества
+      </div>
+      <div style="color: #cbd5e1; line-height: 1.5;">
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          <span style="color: var(--greif-green); margin-right: 10px;">✓</span>
+          Точные расчеты на основе реальных данных
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          <span style="color: var(--greif-green); margin-right: 10px;">✓</span>
+          Экономия материалов и времени
+        </div>
+        <div style="display: flex; align-items: center;">
+          <span style="color: var(--greif-green); margin-right: 10px;">✓</span>
+          Профессиональный подход к смешиванию
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
+    const CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
+
+    let bleDevice = null;
+    let bleServer = null;
+    let bleCharacteristic = null;
+
+    async function connectBLE() {
+      if (!navigator.bluetooth) {
+        alert("❌ Web Bluetooth не поддерживается.\nИспользуйте Chrome на Android.");
+        return;
+      }
+      try {
+        bleDevice = await navigator.bluetooth.requestDevice({
+          filters: [{ namePrefix: "InkMixer" }],
+          optionalServices: [SERVICE_UUID]
+        });
+        bleServer = await bleDevice.gatt.connect();
+        const service = await bleServer.getPrimaryService(SERVICE_UUID);
+        bleCharacteristic = await service.getCharacteristic(CHARACTERISTIC_UUID);
+        alert("✅ Подключено к миксеру!");
+      } catch (error) {
+        console.error("BLE Error:", error);
+        alert("Ошибка подключения:\n" + (error.message || error));
+      }
+    }
+
+    async function sendMixCommand(cf2000, cf3000) {
+      if (!bleCharacteristic) {
+        alert("⚠️ Сначала подключитесь к ESP32!");
+        return;
+      }
+      const command = `MIX:${cf2000}:${cf3000}\n`;
+      const encoder = new TextEncoder();
+      const data = encoder.encode(command);
+      try {
+        await bleCharacteristic.writeValue(data);
+        alert(`✅ Команда отправлена!\nCF2000: ${cf2000} мл\nCF3000: ${cf3000} мл`);
+      } catch (error) {
+        console.error("Send Error:", error);
+        alert("❌ Ошибка отправки:\n" + error.message);
+      }
+    }
+
+    function calculate() {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const manData = document.getElementById('manufacturer').value.split(',');
+      const fullText = document.getElementById('manufacturer').options[document.getElementById('manufacturer').selectedIndex].text;
+      const manufacturerName = fullText.split(' (')[0];
+      
+      if (weight > 0) {
+        const totalSolventML = weight * parseFloat(manData[0]);
+        const cf2000 = Math.round(totalSolventML * parseFloat(manData[1]));
+        const cf3000 = Math.round(totalSolventML * parseFloat(manData[2]));
+        
+        const costCF2000 = (cf2000 / 1000) * 150;
+        const costCF3000 = (cf3000 / 1000) * 200;
+        const totalCost = Math.round(costCF2000 + costCF3000);
+        
+        const resultHTML = `
+          <div class="result-item">
+            <div class="solvent-label">
+              <span class="icon">🔵</span>
+              CF2000
+            </div>
+            <div class="solvent-value">${cf2000} мл</div>
+          </div>
+          <div class="result-item">
+            <div class="solvent-label">
+              <span class="icon">🔴</span>
+              CF3000
+            </div>
+            <div class="solvent-value">${cf3000} мл</div>
+          </div>
+          <div class="result-item">
+            <div class="solvent-label">
+              <span class="icon">⚡</span>
+              Всего растворителя
+            </div>
+            <div class="solvent-value">${Math.round(totalSolventML)} мл</div>
+          </div>
+          <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.9rem; color: rgba(255,255,255,0.8);">
+            Для <strong>${weight}г</strong> чернил <strong>${manufacturerName}</strong>
+          </div>
+          <div style="margin-top: 20px;">
+            <button class="btn" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="sendMixCommand(${cf2000}, ${cf3000})">
+              <span class="icon">⚙️</span> ЗАПУСТИТЬ МИКСЕР
+            </button>
+          </div>
+        `;
+        
+        document.getElementById('resultContent').innerHTML = resultHTML;
+        document.getElementById('resultCard').style.display = 'block';
+        document.getElementById('totalCost').textContent = totalCost + '₽';
+        document.getElementById('statsGrid').style.display = 'grid';
+        document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        alert('🎯 Введите вес чернил для расчета!');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputCard = document.querySelector('.card');
+      const calcBtn = inputCard.querySelector('.btn');
+      
+      const connectBtn = document.createElement('button');
+      connectBtn.className = 'btn';
+      connectBtn.style.background = 'linear-gradient(135deg, #1e293b, #334155)';
+      connectBtn.style.marginTop = '15px';
+      connectBtn.innerHTML = '<span class="icon">📡</span> ПОДКЛЮЧИТЬСЯ К ESP32';
+      connectBtn.onclick = connectBLE;
+      
+      if (calcBtn) {
+        calcBtn.parentNode.insertBefore(connectBtn, calcBtn.nextSibling);
+      }
+    });
+  </script>
+</body>
+</html>
